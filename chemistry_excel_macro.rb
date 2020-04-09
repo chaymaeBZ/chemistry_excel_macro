@@ -9,8 +9,8 @@ workbook = RubyXL::Parser.parse(path_to_excel)
 worksheet = workbook[0]
 
 # select the 2 relevant columns
-@col_a = worksheet.collect {|row| row[0].value if row[0]}.drop(1).compact
-@col_b = worksheet.collect {|row| row[1].value if row[1]}.drop(1).compact
+@col_a = worksheet.collect {|row| row[0].value.strip.squeeze(" ") if row[0]}.drop(1).compact
+@col_b = worksheet.collect {|row| row[1].value.strip.squeeze(" ") if row[1]}.drop(1).compact
 
 # init empty result list
 @uniq_values = []
@@ -24,6 +24,7 @@ end
   @uniq_values << value unless @col_a.include? value
 end
 
+worksheet.add_cell(0, 3, "hkl from super structure") 
 # write result to column 3
 @uniq_values.each_with_index do |val, index|
   worksheet.add_cell(index + 1, 3, val) 
